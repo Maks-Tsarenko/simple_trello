@@ -1,0 +1,108 @@
+@mixin inputStyles {
+  width: 100%;
+  height: 32px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  resize: vertical;
+  overflow-y: hidden;
+  box-sizing: border-box;
+
+  &:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+
+  // &--title {
+  //   height: 22px;
+  // }
+}
+
+@mixin btnStyles {
+  height: 32px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+@mixin btnSave {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 8px;
+
+  background-color: #007bff;
+  color: #fff;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+}
+
+@mixin btnClose {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: #f8f9fa;
+  color: #333;
+
+  &:hover {
+    background-color: #d5d8db;
+  }
+}
+
+@mixin dateStyles {
+  &--default {
+    background-color: #eee;
+    color: black;
+  }
+
+  &--yellow {
+    background-color: rgb(212, 212, 15);
+    color: black;
+  }
+
+  &--yellow-hot {
+    background-color: #ff9100;
+    color: black;
+  }
+
+  &--red {
+    background-color: #cd0000;
+    color: white;
+  }
+}
+
+@mixin btnAdd {
+  display: flex;
+  align-items: center;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  background-color: #eaecec;
+  color: #333;
+
+  &:hover {
+    background-color: #c9c9c9;
+  }
+}
+
+@mixin cardModalData {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  width: 100%;
+  box-sizing: border-box;
+
+  &:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+}

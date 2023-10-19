@@ -1,0 +1,37 @@
+@import "../../helpers/styles/mixins.scss";
+
+.card-input{
+  &__container {
+    width: 250px;
+  }
+
+  &__textarea {
+    @include inputStyles;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    height: 44px;
+  }
+
+  &__btn {
+    @include btnStyles;
+  
+    &--add {
+      @include btnSave;
+    }
+  
+    &--close {
+      @include btnClose;
+    }
+  }
+}
+
+
+
+
+
+
+
+

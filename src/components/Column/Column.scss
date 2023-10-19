@@ -1,0 +1,49 @@
+@import "../../helpers/styles/mixins.scss";
+
+.column {
+  width: 272px;
+  padding: 12px;
+
+  color: #1a1a1a;
+  display: flex;
+  flex-direction: column;
+
+  border: 1px solid grey;
+  border-radius: 12px;
+
+  background-color: #fff;
+
+  &__content {
+    min-height: 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 16px;
+  }
+
+  &__card {
+    margin-bottom: 12px;
+  }
+
+  &__add-card {
+    height: 44px;
+
+    @include btnAdd; 
+  }
+
+  &__card-img {
+    margin-right: 4px;
+  }
+
+  &__btn-title {
+    font-size: 16px;
+    display: flex;
+    text-align: center;
+  }
+}

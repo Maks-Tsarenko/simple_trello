@@ -1,0 +1,57 @@
+@import "../../helpers/styles/mixins.scss";
+
+.card {
+  position: relative;
+  min-height: 24px;
+  padding: 6px;
+  background-color: #eee;
+  border-radius: 6px;
+
+  transition: all 0.3s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  &:hover .card__btnEdit {
+    opacity: 1;
+  }
+
+  @include dateStyles;
+
+  &__name {
+    margin-bottom: 12px;
+  }
+
+  &__date {
+    font-size: 12px;
+  }
+
+  &__btnEdit {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    top: 6px;
+    right: 6px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 6px;
+    opacity: 0;
+
+    transition: all 0.3s;
+
+    &:hover {
+      background-color: rgb(241, 218, 98);
+    }
+  }
+
+  &__btnImg {
+    width: 20px;
+    height: 20px;
+  }
+}
