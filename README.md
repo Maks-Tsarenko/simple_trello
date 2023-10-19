@@ -3,7 +3,7 @@
 **Simple version Trello** is a cloud-based application for managing projects of small groups, developed by Fog Creek Software. Trello uses a paradigm for project management known as kanban.
 
 
-<img width="674" alt="TEST1" src="https://github.com/Maks-Tsarenko/react_simple-trello/assets/112890301/dabcf47a-bf7a-4ce3-86a9-54965eeb118d">
+<img width="674" alt="TEST1" src="https://github.com/Maks-Tsarenko/simple_trello/assets/112890301/8d09c999-697a-4979-ac6e-30fb352a2075">
 
 
 
