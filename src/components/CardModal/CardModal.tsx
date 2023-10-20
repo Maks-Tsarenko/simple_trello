@@ -47,8 +47,14 @@ export const CardModal: React.FC<Props> = ({
       description: editedDescription,
     };
 
-    if (editedDueDate !== (dueDate ? formatDate(dueDate) : '')) {
-      updatedCard.dueDate = new Date(editedDueDate);
+    const newDueDate = new Date(editedDueDate); 
+
+    if (
+      editedDueDate && 
+      !isNaN(newDueDate.getTime()) &&
+      editedDueDate !== (dueDate ? formatDate(dueDate) : '')
+    ) {
+      updatedCard.dueDate = newDueDate;
     }
 
     dispatch(updateCard(updatedCard));
