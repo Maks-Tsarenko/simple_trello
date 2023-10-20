@@ -46,12 +46,13 @@ export const columnsSlice = createSlice({
       }
     },
     updateCard: (state: ColumnsState, action: PayloadAction<CardTypes>) => {
-      const { id, columnId } = action.payload;
-      const column = state.columns.find(column => column.id === columnId);
-      const cardIndex = column?.cards.findIndex(card => card.id === id);
-
-      if (column && (cardIndex !== undefined && cardIndex > -1)) {
-        column.cards[cardIndex] = action.payload;
+      const { id } = action.payload;
+      for (let column of state.columns) {
+        const cardIndex = column.cards.findIndex(card => card.id === id);
+        if (cardIndex > -1) {
+          column.cards[cardIndex] = action.payload;
+          return;
+        }
       }
     },
     removeCard: (state: ColumnsState, action: PayloadAction<{
@@ -70,16 +71,16 @@ export const columnsSlice = createSlice({
       targetIndex?: number,
     }>) => {
       const { cardId, fromColumnId, toColumnId, targetIndex } = action.payload;
-      
+
       const fromColumn = state.columns.find(column => column.id === fromColumnId);
       const toColumn = state.columns.find(column => column.id === toColumnId);
-      
+
       if (!fromColumn || !toColumn) return;
-    
+
       const cardToMove = fromColumn.cards.find(card => card.id === cardId);
-    
+
       if (!cardToMove) return;
-    
+
       fromColumn.cards = fromColumn.cards.filter(card => card.id !== cardId);
       if (typeof targetIndex !== 'undefined') {
         toColumn.cards.splice(targetIndex, 0, cardToMove);
