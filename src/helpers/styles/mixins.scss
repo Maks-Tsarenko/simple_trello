@@ -13,10 +13,6 @@
     outline: none;
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
   }
-
-  // &--title {
-  //   height: 22px;
-  // }
 }
 
 @mixin btnStyles {
@@ -74,7 +70,7 @@
 
   &--red {
     background-color: #cd0000;
-    color: white;
+    color: black;
   }
 }
 
