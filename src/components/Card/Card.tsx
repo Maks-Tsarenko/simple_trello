@@ -1,15 +1,18 @@
 import React, { useState, useRef } from 'react';
 import './Card.scss';
-import { CardTypes } from '../../types/CardTypes';
-import editBtn from '../../img/edit.svg';
-import { useAppDispatch } from '../../app/hooks';
-import { moveCard, removeCard, renameCard } from '../../slices/columnSlice';
-import { ModalRenameCard } from '../ModalRenameCard/ModalRenameCard';
-import { CardModal } from '../CardModal/CardModal';
-import { getColorBasedOnDate } from '../../helpers/functions/getColorBasedOnDate';
-import { formatDate } from '../../helpers/functions/formatDate';
+
+import editBtn from 'img/edit.svg';
+import { CardTypes } from 'types/CardTypes';
+import { useAppDispatch } from 'store/hooks';
 import { useDrag, useDrop } from 'react-dnd';
-import { updateTextAreaHeight } from '../../helpers/functions/updateTextAreaHeight';
+import { moveCard, removeCard, renameCard } from 'slices/columnSlice';
+import { updateTextAreaHeight } from 'helpers/functions/updateTextAreaHeight';
+// import { CardModalNew } from 'components/CardModal/CardModal';
+import { ModalRenameCard } from 'components/ModalRenameCard/ModalRenameCard';
+import { formatDate } from 'helpers/functions/formatDate';
+import { getCurrentColor } from 'helpers/functions/getCurrentColor';
+import { useOpener } from 'hooks/useOpener';
+import { CardModal } from 'components/CardModal/CardModal';
 
 type Props = {
   card: CardTypes,
@@ -20,7 +23,8 @@ type Props = {
 export const Card: React.FC<Props> = ({ card, columnId, index }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedName, setEditedName] = useState(card.name);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { isOpen, setEditOpen, handleIsOpen } = useOpener();
+
   const dispatch = useAppDispatch();
 
   const ref = useRef(null);
@@ -32,57 +36,57 @@ export const Card: React.FC<Props> = ({ card, columnId, index }) => {
       isDragging: monitor.isDragging(),
     }),
   });
-  
+
   const [, drop] = useDrop({
     accept: 'CARD',
     hover: (item: any, monitor) => {
       if (item.columnId !== columnId) {
         return;
       }
-    
+
       const draggedIndex = item.index;
       const hoverIndex = index;
-    
+
       if (draggedIndex === hoverIndex) {
         return;
       }
-    
+
       const hoverBoundingRect = (ref.current as any).getBoundingClientRect();
       const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
       const clientOffset = monitor.getClientOffset();
 
-      if(!clientOffset) {
+      if (!clientOffset) {
         return;
       }
 
       const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-    
+
       if (draggedIndex < hoverIndex && hoverClientY < hoverMiddleY) {
         return;
       }
       if (draggedIndex > hoverIndex && hoverClientY > hoverMiddleY) {
         return;
       }
-    
+
       dispatch(moveCard({
         cardId: item.id,
         fromColumnId: columnId,
         toColumnId: columnId,
         targetIndex: hoverIndex
       }));
-    
+
       item.index = hoverIndex;
     }
   });
-  
+
   drag(drop(ref));
 
   const handleModalOpen = () => {
-    setIsModalOpen(true);
+    setEditOpen();
   };
 
   const handleModalClose = () => {
-    setIsModalOpen(false);
+    handleIsOpen();
   };
 
   const handleEditName = (e: React.MouseEvent) => {
@@ -122,25 +126,19 @@ export const Card: React.FC<Props> = ({ card, columnId, index }) => {
     dispatch(removeCard({ columnId, cardId: card.id }));
   };
 
-  let dueDateColor = '';
-  if (card.dueDate) {
-    dueDateColor = getColorBasedOnDate(card.dueDate);
-  };
-
   return (
     <div
-      className={`card card${dueDateColor}`}
+      className={`card card${getCurrentColor(card.dueDate)}`}
       onClick={handleModalOpen}
       ref={ref}
     >
       <div
         className="card__modal"
       >
-        {isModalOpen && (
+        {isOpen && (
           <CardModal
             card={card}
             onClose={handleModalClose}
-            dueDateColor={dueDateColor}
             onSaveName={handleSaveName}
             editedName={editedName}
             onNameChange={handleNameImputChange}

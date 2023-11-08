@@ -1,7 +1,7 @@
 import React from 'react';
 import './ColumnInput.scss';
-import closeBtn from '../../img/Close.svg';
-import plusIcon from '../../img/Plus.svg';
+import closeBtn from 'img/Close.svg';
+import plusIcon from 'img/Plus.svg';
 
 type Props = {
   isVisible: boolean,

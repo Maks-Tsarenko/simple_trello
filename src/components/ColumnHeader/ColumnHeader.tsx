@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import './ColumnHeader.scss';
-import closeBtn from '../../img/Close.svg';
+import closeBtn from 'img/Close.svg';
 
 type Props = {
   isEditing: boolean,

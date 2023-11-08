@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ColumnTypes } from '../types/ColumnTypes';
-import { CardTypes } from '../types/CardTypes';
+import { RootState } from 'store/store';
+import { CardTypes } from 'types/CardTypes';
+import { ColumnTypes } from 'types/ColumnTypes';
 
 type ColumnsState = {
   columns: ColumnTypes[],
@@ -101,3 +102,5 @@ export const {
   removeCard,
   moveCard,
 } = columnsSlice.actions;
+
+export const selectColumns = (state: RootState) => state.columns.columns;
