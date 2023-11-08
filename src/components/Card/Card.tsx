@@ -1,13 +1,11 @@
 import React, { useState, useRef } from 'react';
 import './Card.scss';
-
 import editBtn from 'img/edit.svg';
 import { CardTypes } from 'types/CardTypes';
 import { useAppDispatch } from 'store/hooks';
 import { useDrag, useDrop } from 'react-dnd';
 import { moveCard, removeCard, renameCard } from 'slices/columnSlice';
 import { updateTextAreaHeight } from 'helpers/functions/updateTextAreaHeight';
-// import { CardModalNew } from 'components/CardModal/CardModal';
 import { ModalRenameCard } from 'components/ModalRenameCard/ModalRenameCard';
 import { formatDate } from 'helpers/functions/formatDate';
 import { getCurrentColor } from 'helpers/functions/getCurrentColor';

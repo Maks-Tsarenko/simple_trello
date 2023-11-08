@@ -83,9 +83,7 @@ export const CardModal: React.FC<Props> = ({
         className="card-modal__content"
         onSubmit={handleSubmit(onSubmit)}
       >
-
         <div className={`card-modal-title__header card-modal-title__header${getCurrentColor(dueDate)}`}>
-
           <input
             className="card-modal-title__data card-modal-title__data--title"
             onKeyUp={handleKeyUp}
@@ -105,11 +103,9 @@ export const CardModal: React.FC<Props> = ({
           <textarea
             className="card-modal-description__data card-modal-description__data--description"
             {...register("description")}
-
           ></textarea>
 
           {errors.description && <p className="error-message">{errors.description.message}</p>}
-
         </div>
 
         <div className="card-modal-date">
@@ -120,9 +116,8 @@ export const CardModal: React.FC<Props> = ({
               {...register("dueDate")}
             />
           </div>
-
         </div>
-
+        
         <button
           className="card-modal__btn card-modal__btn--save card-modal__btn--last"
           type="submit"
