@@ -1,10 +1,10 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import './App.scss';
-import store from './store/store';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { Board } from 'components/Board/Board';
+import { Board } from 'components/Board';
+import store from 'store';
 
 export const App: React.FC = () => {
   return (

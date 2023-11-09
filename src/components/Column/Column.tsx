@@ -6,10 +6,9 @@ import { ColumnTypes } from 'types/ColumnTypes';
 import { useAppDispatch } from 'store/hooks';
 import { addCard, moveCard, removeColumn, renameColumn } from 'slices/columnSlice';
 import { CardTypes } from 'types/CardTypes';
-import { ColumnHeader } from 'components/ColumnHeader/ColumnHeader';
-import { CardList } from 'components/CardList/CardList';
-import { CardInput } from 'components/CardInput/CardInput';
-
+import { ColumnHeader } from 'components/ColumnHeader';
+import { CardList } from 'components/CardList';
+import { CardInput } from 'components/CardInput';
 
 export type Props = {
   column: ColumnTypes,

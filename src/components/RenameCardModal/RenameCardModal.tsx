@@ -1,5 +1,5 @@
 import React from 'react';
-import './ModalRenameCard.scss';
+import './RenameCardModal.scss';
 
 type Props = {
   editedName: string
