@@ -3,5 +3,5 @@ export interface CardTypes {
   name: string;
   columnId: number;
   description?: string;
-  dueDate?: Date;
+  dueDate?: Date | null;
 }

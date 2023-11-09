@@ -6,7 +6,7 @@ import { useAppDispatch } from 'store/hooks';
 import { useDrag, useDrop } from 'react-dnd';
 import { moveCard, removeCard, renameCard } from 'slices/columnSlice';
 import { updateTextAreaHeight } from 'helpers/functions/updateTextAreaHeight';
-import { formatDate } from 'helpers/functions/formatDate';
+import { formatDateToString } from 'helpers/functions/formatDateToString';
 import { getCurrentColor } from 'helpers/functions/getCurrentColor';
 import { useOpener } from 'hooks/useOpener';
 import { CardModal } from 'components/CardModal';
@@ -21,7 +21,7 @@ type Props = {
 export const Card: React.FC<Props> = ({ card, columnId, index }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedName, setEditedName] = useState(card.name);
-  const { isOpen, setIsVisible, setIsHiden } = useOpener();
+  const { isOpen, setIsVisible, setIsHidden } = useOpener();
 
   const dispatch = useAppDispatch();
 
@@ -84,7 +84,7 @@ export const Card: React.FC<Props> = ({ card, columnId, index }) => {
   };
 
   const handleModalClose = () => {
-    setIsHiden();
+    setIsHidden();
   };
 
   const handleEditName = (e: React.MouseEvent) => {
@@ -168,7 +168,7 @@ export const Card: React.FC<Props> = ({ card, columnId, index }) => {
 
       {card.dueDate && (
         <div className="card__date">
-          {`Expires on ${formatDate(card.dueDate)}`}
+          {`Expires on ${formatDateToString(card.dueDate)}`}
         </div>
       )}
     </div>

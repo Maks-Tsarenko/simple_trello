@@ -3,7 +3,7 @@ import { useState } from 'react';
 export const useOpener = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const setIsHiden = () => {
+  const setIsHidden = () => {
     setIsOpen(false);
   };
 
@@ -13,7 +13,7 @@ export const useOpener = () => {
 
   return {
     isOpen,
-    setIsHiden,
+    setIsHidden,
     setIsVisible
   }
 };

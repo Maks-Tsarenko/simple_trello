@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './CardModal.scss';
 import { useForm } from 'react-hook-form';
 import { CardTypes } from 'types/CardTypes';
@@ -10,8 +10,9 @@ import { getCurrentColor } from 'helpers/functions/getCurrentColor';
 import { schema } from 'helpers/functions/schema';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
-import { parse, addYears, subYears } from 'date-fns';
-import { formatDate } from 'helpers/functions/formatDate';
+import { addYears, subYears } from 'date-fns';
+import { formatDateToString } from 'helpers/functions/formatDateToString';
+import { formatStringToDate } from 'helpers/functions/formatStringToDate';
 
 type Props = {
   card: CardTypes,
@@ -34,35 +35,20 @@ export const CardModal: React.FC<Props> = ({
 }) => {
   const { dueDate, description, name } = card;
   const dispatch = useAppDispatch();
-  const [startDate, setStartDate] = useState(dueDate);
   const tenYearsAgo = subYears(new Date(), 10);
   const tenYearsFromNow = addYears(new Date(), 10);
 
-  const { register, handleSubmit, setValue, formState: { errors }, } = useForm<IFormInput>({
+  const { register, handleSubmit, setValue, watch, formState: { errors }, } = useForm<IFormInput>({
     defaultValues: {
       name: name,
       description: description,
-      dueDate: dueDate ? formatDate(dueDate) : '',
+      dueDate: dueDate ? formatDateToString(dueDate) : '',
     },
     resolver: yupResolver(schema),
   });
 
-  const parseDate = (dateString: string): Date => {
-    return parse(dateString, 'dd.MM.yyyy', new Date());
-  };
-
   const onSubmit = (data: IFormInput) => {
-    let dueDate: Date | undefined;
-
-    if (data.dueDate) {
-      const parsedDate = new Date(data.dueDate);
-      if (!isNaN(parsedDate.getTime())) {
-        dueDate = parseDate(data.dueDate);
-      }
-    } else {
-      dueDate = undefined;
-    }
-
+    const dueDate = formatStringToDate(data.dueDate);
     const descriptionValue = data.description ?? '';
 
     const updatedCard = {
@@ -93,8 +79,7 @@ export const CardModal: React.FC<Props> = ({
 
   const onDateChange = (date: Date | null) => {
     if (date) {
-      const formattedDate = formatDate(date);
-      setStartDate(date);
+      const formattedDate = formatDateToString(date);
       setValue("dueDate", formattedDate);
     }
   };
@@ -137,9 +122,9 @@ export const CardModal: React.FC<Props> = ({
                 <div className="card-modal__date-close card-modal__date-choose">
                   Expires on
                 </div>
-
+                
                 <DatePicker
-                  selected={startDate}
+                  selected={formatStringToDate(watch('dueDate'))}
                   onChange={onDateChange}
                   dateFormat="dd.MM.yyyy"
                   minDate={tenYearsAgo}
@@ -153,7 +138,7 @@ export const CardModal: React.FC<Props> = ({
               </div>
 
               <DatePicker
-                selected={startDate}
+                selected={formatStringToDate(watch('dueDate'))}
                 onChange={onDateChange}
                 dateFormat="dd.MM.yyyy"
                 minDate={tenYearsAgo}
