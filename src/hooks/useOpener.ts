@@ -3,22 +3,17 @@ import { useState } from 'react';
 export const useOpener = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleIsOpen = () => {
-    setIsOpen(prevState => !prevState);
-  };
-
-  const setEditClose = () => {
+  const setIsHiden = () => {
     setIsOpen(false);
   };
 
-  const setEditOpen = () => {
+  const setIsVisible = () => {
     setIsOpen(true);
   };
 
   return {
     isOpen,
-    handleIsOpen,
-    setEditClose,
-    setEditOpen
+    setIsHiden,
+    setIsVisible
   }
 };

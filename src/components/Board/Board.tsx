@@ -3,8 +3,8 @@ import './Board.scss';
 import { useState } from 'react';
 import { addColumn, selectColumns } from 'slices/columnSlice';
 import { ColumnTypes } from 'types/ColumnTypes';
-import { ColumnList } from 'components/ColumnList/ColumnList';
-import { ColumnInput } from 'components/ColumnInput/ColumnInput';
+import { ColumnList } from 'components/ColumnList';
+import { ColumnInput } from 'components/ColumnInput';
 
 export const Board: React.FC = () => {
   const [newColumnName, setNewColumnName] = useState('');

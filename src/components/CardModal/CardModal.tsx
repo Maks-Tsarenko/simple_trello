@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './CardModal.scss';
 import { useForm } from 'react-hook-form';
 import { CardTypes } from 'types/CardTypes';
-import { formatDate } from 'helpers/functions/formatDate';
 import { useAppDispatch } from 'store/hooks';
 import { updateCard } from 'slices/columnSlice';
 import { yupResolver } from '@hookform/resolvers/yup';
-import descripLogo from 'img/description.svg';
+import iconForDescription from 'img/description.svg';
 import { getCurrentColor } from 'helpers/functions/getCurrentColor';
 import { schema } from 'helpers/functions/schema';
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
+import { parse, addYears, subYears } from 'date-fns';
+import { formatDate } from 'helpers/functions/formatDate';
 
 type Props = {
   card: CardTypes,
@@ -31,8 +34,11 @@ export const CardModal: React.FC<Props> = ({
 }) => {
   const { dueDate, description, name } = card;
   const dispatch = useAppDispatch();
+  const [startDate, setStartDate] = useState(dueDate);
+  const tenYearsAgo = subYears(new Date(), 10);
+  const tenYearsFromNow = addYears(new Date(), 10);
 
-  const { register, handleSubmit, formState: { errors }, } = useForm<IFormInput>({
+  const { register, handleSubmit, setValue, formState: { errors }, } = useForm<IFormInput>({
     defaultValues: {
       name: name,
       description: description,
@@ -41,29 +47,37 @@ export const CardModal: React.FC<Props> = ({
     resolver: yupResolver(schema),
   });
 
-  const handleModalCloseClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    onClose();
+  const parseDate = (dateString: string): Date => {
+    return parse(dateString, 'dd.MM.yyyy', new Date());
   };
 
   const onSubmit = (data: IFormInput) => {
-    let dueDateObject: Date | null = null;
+    let dueDate: Date | undefined;
 
     if (data.dueDate) {
       const parsedDate = new Date(data.dueDate);
       if (!isNaN(parsedDate.getTime())) {
-        dueDateObject = parsedDate;
+        dueDate = parseDate(data.dueDate);
       }
+    } else {
+      dueDate = undefined;
     }
+
+    const descriptionValue = data.description ?? '';
 
     const updatedCard = {
       ...card,
       name: data.name,
-      description: data.description,
-      dueDate: dueDateObject,
+      description: descriptionValue,
+      dueDate: dueDate,
     };
 
-    dispatch(updateCard(updatedCard as CardTypes));
+    dispatch(updateCard(updatedCard));
+    onClose();
+  };
+
+  const handleModalCloseClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
     onClose();
   };
 
@@ -74,6 +88,14 @@ export const CardModal: React.FC<Props> = ({
   const handleKeyUp = (e: React.KeyboardEvent<HTMLElement>) => {
     if (e.key === 'Enter') {
       handleBlurTitle();
+    }
+  };
+
+  const onDateChange = (date: Date | null) => {
+    if (date) {
+      const formattedDate = formatDate(date);
+      setStartDate(date);
+      setValue("dueDate", formattedDate);
     }
   };
 
@@ -96,7 +118,7 @@ export const CardModal: React.FC<Props> = ({
 
         <div className="card-modal-description">
           <div className="card-modal-description__header">
-            <img className="card-modal-description__icon" src={descripLogo} alt="icon" />
+            <img className="card-modal-description__icon" src={iconForDescription} alt="icon" />
             <h3 className="card-modal-description__title">Description</h3>
           </div>
 
@@ -110,14 +132,39 @@ export const CardModal: React.FC<Props> = ({
 
         <div className="card-modal-date">
           <div className="card-modal-date__container">
-            <input
-              className="card-modal-date__data card-modal-date__data--date"
-              type="date"
-              {...register("dueDate")}
-            />
+            {dueDate ? (
+              <>
+                <div className="card-modal__date-close card-modal__date-choose">
+                  Expires on
+                </div>
+
+                <DatePicker
+                  selected={startDate}
+                  onChange={onDateChange}
+                  dateFormat="dd.MM.yyyy"
+                  minDate={tenYearsAgo}
+                  maxDate={tenYearsFromNow}
+                />
+              </>
+            ) : (
+              <>
+              <div className="card-modal__date-close card-modal__date-choose">
+                Choose date
+              </div>
+
+              <DatePicker
+                selected={startDate}
+                onChange={onDateChange}
+                dateFormat="dd.MM.yyyy"
+                minDate={tenYearsAgo}
+                maxDate={tenYearsFromNow}
+              />
+            </>
+            )}
+
           </div>
         </div>
-        
+
         <button
           className="card-modal__btn card-modal__btn--save card-modal__btn--last"
           type="submit"

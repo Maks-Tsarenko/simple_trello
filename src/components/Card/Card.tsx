@@ -6,11 +6,11 @@ import { useAppDispatch } from 'store/hooks';
 import { useDrag, useDrop } from 'react-dnd';
 import { moveCard, removeCard, renameCard } from 'slices/columnSlice';
 import { updateTextAreaHeight } from 'helpers/functions/updateTextAreaHeight';
-import { ModalRenameCard } from 'components/ModalRenameCard/ModalRenameCard';
 import { formatDate } from 'helpers/functions/formatDate';
 import { getCurrentColor } from 'helpers/functions/getCurrentColor';
 import { useOpener } from 'hooks/useOpener';
-import { CardModal } from 'components/CardModal/CardModal';
+import { CardModal } from 'components/CardModal';
+import { ModalRenameCard } from 'components/RenameCardModal';
 
 type Props = {
   card: CardTypes,
@@ -21,7 +21,7 @@ type Props = {
 export const Card: React.FC<Props> = ({ card, columnId, index }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedName, setEditedName] = useState(card.name);
-  const { isOpen, setEditOpen, handleIsOpen } = useOpener();
+  const { isOpen, setIsVisible, setIsHiden } = useOpener();
 
   const dispatch = useAppDispatch();
 
@@ -80,11 +80,11 @@ export const Card: React.FC<Props> = ({ card, columnId, index }) => {
   drag(drop(ref));
 
   const handleModalOpen = () => {
-    setEditOpen();
+    setIsVisible();
   };
 
   const handleModalClose = () => {
-    handleIsOpen();
+    setIsHiden();
   };
 
   const handleEditName = (e: React.MouseEvent) => {
