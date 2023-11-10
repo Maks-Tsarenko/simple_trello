@@ -55,3 +55,74 @@
     height: 20px;
   }
 }
+
+.card-modal-title {
+  &__header {
+    @include dateStyles;
+    padding: 16px;
+    height: 80px;
+    background-color: #eee;
+  }
+  
+  &__header-title {
+    margin: 0;
+    display: flex;
+    gap: 8px;
+  }
+
+  &__data {
+    @include cardModalData;
+  }
+
+  &__btn-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 6px;
+    opacity: 0;
+    transition: all 0.3s;
+
+    &:hover {
+      background-color: rgb(241, 218, 98);
+    }
+  }
+}
+
+.card-modal-date {
+  &__container {
+    display: flex;
+    margin-bottom: 20px;
+  }
+
+  &__btn {
+    @include btnStyles;
+  
+    &--close {
+      @include btnClose;
+    }
+  }
+  
+    &__data {
+      @include cardModalData;
+    
+      &--date {
+        width: 150px;
+        height: 32px;
+        margin-right: 12px;
+      }
+    }
+  
+    &__show {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      width: 130px;
+      margin-bottom: 20px;
+    
+      &:hover {
+        background-color: rgb(241, 218, 98);
+      }
+    }
+}

@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import './CardInput.scss';
-import closeBtn from '../../img/Close.svg';
+import closeBtn from 'img/Close.svg';
 
 type Props = {
   cardName: string;

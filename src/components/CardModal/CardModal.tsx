@@ -1,87 +1,73 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './CardModal.scss';
-import { CardTypes } from '../../types/CardTypes';
-import { formatDate } from '../../helpers/functions/formatDate';
-import { useAppDispatch } from '../../app/hooks';
-import { updateCard } from '../../slices/columnSlice';
-import { updateTextAreaHeight } from '../../helpers/functions/updateTextAreaHeight';
-import { CardModalTitle } from '../CardModalTitle/CardModalTitle';
-import { CardModalDescription } from '../CardModalDescription/CardModalDescription';
-import { CardModalDate } from '../CardModalDate/CardModalDate';
+import { useForm, useWatch } from 'react-hook-form';
+import { CardTypes } from 'types/CardTypes';
+import { useAppDispatch } from 'store/hooks';
+import { updateCard } from 'slices/columnSlice';
+import { yupResolver } from '@hookform/resolvers/yup';
+import iconForDescription from 'img/description.svg';
+import { getCurrentColor } from 'helpers/functions/getCurrentColor';
+import { schema } from 'helpers/functions/schema';
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
+import { addYears, subYears } from 'date-fns';
+import { formatDateToString } from 'helpers/functions/formatDateToString';
+import { formatStringToDate } from 'helpers/functions/formatStringToDate';
 
 type Props = {
   card: CardTypes,
   onClose: () => void,
-  dueDateColor: string,
   onSaveName: () => void,
   editedName: string,
   onNameChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
 };
 
+interface IFormInput {
+  name: string;
+  description?: string | null;
+  dueDate?: string | null;
+}
+
 export const CardModal: React.FC<Props> = ({
   card,
   onClose,
-  dueDateColor,
   onSaveName,
-  editedName,
-  onNameChange,
 }) => {
-  const [isDecriptionEdit, setIsDecriptionEdit] = useState(false);
-  const [isTitleEdit, setIsTitleEdit] = useState(false);
-  const { dueDate, description } = card;
-  const [editedDescription, setEditedDescription] = useState(description || '');
-  const [editedDueDate, setEditedDueDate] = useState(dueDate ? formatDate(dueDate) : '');
-  const [isDateInputEdit, setIsDateInputEdit] = useState(false);
-
+  const { dueDate, description, name } = card;
   const dispatch = useAppDispatch();
+  const tenYearsAgo = subYears(new Date(), 10);
+  const tenYearsFromNow = addYears(new Date(), 10);
+
+  const { register, handleSubmit, setValue, control, formState: { errors }, } = useForm<IFormInput>({
+    defaultValues: {
+      name: name,
+      description: description,
+      dueDate: dueDate ? formatDateToString(dueDate) : '',
+    },
+    resolver: yupResolver(schema),
+  });
+
+  const onSubmit = (data: IFormInput) => {
+    const dueDate = formatStringToDate(data.dueDate);
+    const descriptionValue = data.description ?? '';
+
+    const updatedCard = {
+      ...card,
+      name: data.name,
+      description: descriptionValue,
+      dueDate: dueDate,
+    };
+
+    dispatch(updateCard(updatedCard));
+    onClose();
+  };
 
   const handleModalCloseClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     onClose();
   };
 
-  const handleSave = (e: React.MouseEvent) => {
-    const updatedCard = {
-      ...card,
-      name: editedName,
-      description: editedDescription,
-    };
-
-    const newDueDate = new Date(editedDueDate); 
-
-    if (
-      editedDueDate && 
-      !isNaN(newDueDate.getTime()) &&
-      editedDueDate !== (dueDate ? formatDate(dueDate) : '')
-    ) {
-      updatedCard.dueDate = newDueDate;
-    }
-
-    dispatch(updateCard(updatedCard));
-    handleModalCloseClick(e);
-  };
-
-  const handleEditDescription = () => {
-    setIsDecriptionEdit(!isDecriptionEdit);
-  };
-
-  const handleTitleedit = () => {
-    setIsTitleEdit(!isTitleEdit);
-  };
-
-  const handleDescriptionSet = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const textarea = e.target;
-    setEditedDescription(textarea.value);
-    updateTextAreaHeight(textarea, 100);
-  };
-
-  const handleCancelDescription = () => {
-    setIsDecriptionEdit(false);
-    setEditedDescription(description || '');
-  };
-
   const handleBlurTitle = () => {
-    setIsTitleEdit(false);
     onSaveName();
   };
 
@@ -91,61 +77,84 @@ export const CardModal: React.FC<Props> = ({
     }
   };
 
-  const handleDescriptionSave = (e: React.MouseEvent) => {
-    const updatedCard = {
-      ...card,
-      description: editedDescription
-    };
-    dispatch(updateCard(updatedCard));
-    setIsDecriptionEdit(false);
+  const onDateChange = (date: Date | null) => {
+    if (date) {
+      const formattedDate = formatDateToString(date);
+      setValue("dueDate", formattedDate);
+    }
   };
 
-  const handleDateEdit = () => {
-    setIsDateInputEdit(!isDateInputEdit);
-    setEditedDueDate('');
-  };
-
-  const handleDueDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEditedDueDate(e.target.value);
-  };
-
-  const cardModalDescription = description || '';
-  const cardModalDate = dueDate || null;
+  const currentDueDate = useWatch({ name: 'dueDate', control });  
+  const formattedDate = formatStringToDate(currentDueDate);
 
   return (
     <div className="card-modal">
-      <div className="card-modal__content">
-        <CardModalTitle
-          title={editedName}
-          isEditing={isTitleEdit}
-          onEdit={handleTitleedit}
-          onBlur={handleBlurTitle}
-          onKeyUp={handleKeyUp}
-          onChange={onNameChange}
-          dueDateColor={dueDateColor}
-        />
+      <form
+        className="card-modal__content"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <div className={`card-modal-title__header card-modal-title__header${getCurrentColor(dueDate)}`}>
+          <input
+            className="card-modal-title__data card-modal-title__data--title"
+            onKeyUp={handleKeyUp}
+            type='text'
+            {...register("name")}
+          />
 
-        <CardModalDescription
-          isEditing={isDecriptionEdit}
-          description={cardModalDescription}
-          editedDescription={editedDescription}
-          onEdit={handleEditDescription}
-          onSave={handleDescriptionSave}
-          onCancel={handleCancelDescription}
-          onChange={handleDescriptionSet}
-        />
+          {errors.name && <p className="error-message">{errors.name.message}</p>}
+        </div>
 
-        <CardModalDate
-          isEditing={isDateInputEdit}
-          dueDate={cardModalDate}
-          editedDueDate={editedDueDate}
-          onEdit={handleDateEdit}
-          onChange={handleDueDateChange}
-        />
+        <div className="card-modal-description">
+          <div className="card-modal-description__header">
+            <img className="card-modal-description__icon" src={iconForDescription} alt="icon" />
+            <h3 className="card-modal-description__title">Description</h3>
+          </div>
+
+          <textarea
+            className="card-modal-description__data card-modal-description__data--description"
+            {...register("description")}
+          ></textarea>
+
+          {errors.description && <p className="error-message">{errors.description.message}</p>}
+        </div>
+
+        <div className="card-modal-date">
+          <div className="card-modal-date__container">
+            {dueDate ? (
+              <>
+                <div className="card-modal__date-close card-modal__date-choose">
+                  Expires on
+                </div>
+
+                <DatePicker
+                  selected={formattedDate}
+                  onChange={onDateChange}
+                  dateFormat="dd.MM.yyyy"
+                  minDate={tenYearsAgo}
+                  maxDate={tenYearsFromNow}
+                />
+              </>
+            ) : (
+              <>
+                <div className="card-modal__date-close card-modal__date-choose">
+                  Choose date
+                </div>
+
+                <DatePicker
+                  selected={formattedDate}
+                  onChange={onDateChange}
+                  dateFormat="dd.MM.yyyy"
+                  minDate={tenYearsAgo}
+                  maxDate={tenYearsFromNow}
+                />
+              </>
+            )}
+          </div>
+        </div>
 
         <button
           className="card-modal__btn card-modal__btn--save card-modal__btn--last"
-          onClick={handleSave}
+          type="submit"
         >
           Save
         </button>
@@ -155,7 +164,7 @@ export const CardModal: React.FC<Props> = ({
         >
           Close
         </button>
-      </div>
+      </form>
     </div>
   );
 };

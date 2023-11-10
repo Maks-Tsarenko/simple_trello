@@ -1,15 +1,15 @@
-import { ColumnTypes } from '../../types/ColumnTypes';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
 import './Board.scss';
 import { useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { addColumn } from '../../slices/columnSlice';
-import { ColumnList } from '../ColumnList/ColumnList';
-import { ColumnInput } from '../ColumnInput/ColumnInput';
+import { addColumn, selectColumns } from 'slices/columnSlice';
+import { ColumnTypes } from 'types/ColumnTypes';
+import { ColumnList } from 'components/ColumnList';
+import { ColumnInput } from 'components/ColumnInput';
 
 export const Board: React.FC = () => {
   const [newColumnName, setNewColumnName] = useState('');
   const [isInputVisible, setInputVisible] = useState(false);
-  const columns = useAppSelector(state => state.columns.columns);
+  const columns = useAppSelector(selectColumns);
   const dispatch = useAppDispatch();
 
   const handleAddColumn = () => {

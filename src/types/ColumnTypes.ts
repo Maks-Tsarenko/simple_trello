@@ -1,4 +1,4 @@
-import { CardTypes } from "./CardTypes";
+import { CardTypes } from "types/CardTypes";
 
 export interface ColumnTypes {
   id: number;

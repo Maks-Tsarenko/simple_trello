@@ -1,6 +1,6 @@
-import { ColumnTypes } from '../../types/ColumnTypes';
-import { Column } from '../Column/Column';
+import { ColumnTypes } from 'types/ColumnTypes';
 import './ColumnList.scss';
+import { Column } from 'components/Column';
 
 type Props = {
   columns: ColumnTypes[];

@@ -28,6 +28,10 @@
     gap: 10px;
   }
 
+  &__date-choose {
+    margin-right: 20px;
+  }
+
   &__btn {
     @include btnStyles;
 
@@ -47,4 +51,65 @@
       @include btnClose;
     }
   }
+}
+
+.card-modal-description {
+  &__header {
+    display: flex;
+  }
+
+  &__icon {
+    margin-right: 8px;
+  }
+
+  &__data {
+    @include cardModalData;
+  
+    &--description {
+      margin: 0;
+      min-height: 100px;
+    }
+  }
+
+  &__btns {
+    display: flex;
+    align-items: center;
+    height: 44px;
+    margin: 0;
+    margin-bottom: 8px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  &__btn {
+    @include btnStyles;
+  
+    &--save {
+      @include btnSave;
+  
+      &:last-of-type {
+        margin-right: 0;
+      }
+    }
+  
+    &--close {
+      @include btnClose;
+    }
+  }
+
+  &__content {
+    height: 100px;
+    padding: 8px;
+    margin: 0;
+  
+    border: 1px solid grey;
+    border-radius: 6px;
+  }
+}
+
+.error-message {
+  color: red;
 }
