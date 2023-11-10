@@ -1,6 +1,6 @@
 import React from 'react';
 import './CardModal.scss';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { CardTypes } from 'types/CardTypes';
 import { useAppDispatch } from 'store/hooks';
 import { updateCard } from 'slices/columnSlice';
@@ -40,7 +40,7 @@ export const CardModal: React.FC<Props> = ({
   const tenYearsAgo = subYears(new Date(), 10);
   const tenYearsFromNow = addYears(new Date(), 10);
 
-  const { register, handleSubmit, setValue, watch, formState: { errors }, } = useForm<IFormInput>({
+  const { register, handleSubmit, setValue, control, formState: { errors }, } = useForm<IFormInput>({
     defaultValues: {
       name: name,
       description: description,
@@ -85,6 +85,9 @@ export const CardModal: React.FC<Props> = ({
       setValue("dueDate", formattedDate);
     }
   };
+
+  const currentDueDate = useWatch({ name: 'dueDate', control });  
+  const formattedDate = formatStringToDate(currentDueDate);
 
   return (
     <div className="card-modal">
@@ -144,7 +147,7 @@ export const CardModal: React.FC<Props> = ({
                 </div>
 
                 <DatePicker
-                  selected={formatStringToDate(watch('dueDate'))}
+                  selected={formattedDate}
                   onChange={onDateChange}
                   dateFormat="dd.MM.yyyy"
                   minDate={tenYearsAgo}
@@ -158,7 +161,7 @@ export const CardModal: React.FC<Props> = ({
                 </div>
 
                 <DatePicker
-                  selected={formatStringToDate(watch('dueDate'))}
+                  selected={formattedDate}
                   onChange={onDateChange}
                   dateFormat="dd.MM.yyyy"
                   minDate={tenYearsAgo}
