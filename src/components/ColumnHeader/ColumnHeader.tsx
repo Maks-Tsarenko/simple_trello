@@ -1,10 +1,10 @@
 import React, { useRef } from 'react';
 import './ColumnHeader.scss';
-// import closeBtn from 'img/Close.svg';
 import { removeColumn } from 'slices/columnSlice';
 import { useAppDispatch } from 'store/hooks';
 import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
+import TextField from '@mui/material/TextField';
 
 type Props = {
   columnId: number,
@@ -36,45 +36,57 @@ export const ColumnHeader: React.FC<Props> = ({
 
   return (
     <div className="column-header">
-      <h3 className="column-header__title" onClick={onEditName}>
+      <div className="column-header__content" onClick={onEditName}>
         {isEditing ? (
-          <input
+          <TextField
+            defaultValue={name}
             ref={inputRef}
-            type="text"
-            className="column-header__input"
-            value={editedColumnName}
+            variant="outlined"
             onChange={onNameChange}
             onBlur={onSaveName}
             onKeyUp={onKeyUp}
-            autoFocus />
+            autoFocus
+            sx={{
+              width: '220px',
+              bgcolor: '#fff',
+              '.MuiInputBase-input': {
+                height: '20px',
+                boxSizing: 'border-box',
+              },
+            }}
+          />
         ) : (
-          name
-        )}
-      </h3>
+          <div className="column-header__content">
+            <h3 className="column-header__title">
+              {name}
+            </h3>
 
-      <Button
-        onClick={handleDeleteColumn}
-        variant="outlined"
-        type="submit"
-        size='small'
-        sx={{
-          padding: '0',
-          justifyContent: 'center',
-          alignItems: 'center',
-          bgcolor: '#fff',
-          height: '32px',
-          minWidth: '32px',
-          border: 'none',
-          color: '#333',
-        }}
-      >
-        <CloseIcon
-          sx={{
-            width: '20px',
-            height: '20px'
-          }}
-        />
-      </Button>
+            <Button
+              onClick={handleDeleteColumn}
+              variant="outlined"
+              type="submit"
+              size='small'
+              sx={{
+                padding: '0',
+                justifyContent: 'center',
+                alignItems: 'center',
+                bgcolor: '#fff',
+                height: '32px',
+                minWidth: '32px',
+                border: 'none',
+                color: '#333',
+              }}
+            >
+              <CloseIcon
+                sx={{
+                  width: '20px',
+                  height: '20px'
+                }}
+              />
+            </Button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

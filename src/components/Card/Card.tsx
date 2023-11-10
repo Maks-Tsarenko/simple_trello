@@ -157,12 +157,12 @@ export const Card: React.FC<Props> = ({ card, columnId, index }) => {
         )}
       </div>
 
-      <button
-        className="card__btnEdit"
-        onClick={handleEditName}
-      >
-        <img className="card__btnImg" src={editBtn} alt="edit button img" />
-      </button>
+        <button
+          className="card__btnEdit"
+          onClick={handleEditName}
+        >
+          <img className="card__btnImg" src={editBtn} alt="edit button img" />
+        </button>
 
       {card.dueDate && (
         <div className="card__date">

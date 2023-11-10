@@ -93,6 +93,10 @@ export const CardModal: React.FC<Props> = ({
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className={`card-modal-title__header card-modal-title__header${getCurrentColor(dueDate)}`}>
+          <h3 className="card-modal__title">
+            Card name
+          </h3>
+
           <TextField
             onKeyUp={handleKeyUp}
             id="outlined-basic"
@@ -102,6 +106,10 @@ export const CardModal: React.FC<Props> = ({
             sx={{
               width: '100%',
               bgcolor: '#fff',
+              '.MuiInputBase-input': {
+                height: '20px',
+                boxSizing: 'border-box',
+              },
             }}
           />
 
@@ -158,7 +166,6 @@ export const CardModal: React.FC<Props> = ({
                 />
               </>
             )}
-
           </div>
         </div>
 

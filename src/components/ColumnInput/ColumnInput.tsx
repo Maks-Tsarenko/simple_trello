@@ -3,6 +3,7 @@ import './ColumnInput.scss';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
+import TextField from '@mui/material/TextField';
 
 type Props = {
   isVisible: boolean,
@@ -28,13 +29,23 @@ export const ColumnInput: React.FC<Props> = ({
       className="column-input"
       onSubmit={onSubmit}
     >
-      <input
-        className="column-input__field"
-        value={columnName}
+      <TextField
         onKeyUp={onKeyUp}
+        defaultValue={columnName}
         onChange={onColumnNameChange}
-        placeholder="Enter the title of the list"
+        id="outlined-basic"
+        variant="outlined"
+        placeholder='Enter the title of the list'
         autoFocus
+        sx={{
+          width: '250px',
+          bgcolor: '#fff',
+          marginBottom: '12px',
+          '.MuiInputBase-input': {
+            height: '20px',
+            boxSizing: 'border-box',
+          },
+        }}
       />
 
       <div className="column-input__btn-group">
