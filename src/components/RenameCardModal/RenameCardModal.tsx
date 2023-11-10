@@ -1,5 +1,8 @@
 import React from 'react';
 import './RenameCardModal.scss';
+import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 type Props = {
   editedName: string
@@ -36,19 +39,22 @@ export const ModalRenameCard: React.FC<Props> = ({
           placeholder="Edit card name"
         />
         <div className="modal__btns">
-          <button
-            className="modal__btn modal__btn--save"
+          <Button
             onClick={handleSaveButton}
+            className='button'
+            variant="contained"
+            type="submit"
           >
             Save
-          </button>
+          </Button>
 
-          <button
-            className="modal__btn modal__btn--remove"
+          <IconButton
+            className='button'
+            aria-label="delete"
             onClick={(e) => onRemoveCard(e)}
           >
-            Remove
-          </button>
+            <DeleteIcon />
+          </IconButton>
         </div>
       </div>
     </div>

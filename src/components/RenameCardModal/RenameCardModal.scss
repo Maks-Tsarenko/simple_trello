@@ -20,14 +20,14 @@
     border-radius: 8px;
     box-shadow: 0 3px 13px rgba(23, 32, 49, 0.26);
 
-    background-color: #c9c0c0;
+    background-color: #dbd4d4;
   }
 
   &__input {
     @include inputStyles;
 
     margin-bottom: 10px;
-    width: 252px;
+    width: 256px;
   }
 
   &__btns {

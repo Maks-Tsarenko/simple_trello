@@ -15,7 +15,7 @@ export const columnsSlice = createSlice({
       state.push(action.payload);
     },
     removeColumn: (state: ColumnsState, action: PayloadAction<number>) => {
-      state = state.filter(column => column.id !== action.payload);
+      return state.filter(column => column.id !== action.payload);
     },
     renameColumn: (state: ColumnsState, action: PayloadAction<{ id: number, newName: string }>) => {
       const column = state.find(column => column.id === action.payload.id);

@@ -5,7 +5,6 @@ import { CardTypes } from 'types/CardTypes';
 import { useAppDispatch } from 'store/hooks';
 import { useDrag, useDrop } from 'react-dnd';
 import { moveCard, removeCard, renameCard } from 'slices/columnSlice';
-import { updateTextAreaHeight } from 'helpers/functions/updateTextAreaHeight';
 import { formatDateToString } from 'helpers/functions/formatDateToString';
 import { getCurrentColor } from 'helpers/functions/getCurrentColor';
 import { useOpener } from 'hooks/useOpener';
@@ -95,7 +94,6 @@ export const Card: React.FC<Props> = ({ card, columnId, index }) => {
   const handleNameChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const textarea = e.target;
     setEditedName(textarea.value);
-    updateTextAreaHeight(textarea, 40);
   };
 
   const handleNameImputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -159,12 +157,12 @@ export const Card: React.FC<Props> = ({ card, columnId, index }) => {
         )}
       </div>
 
-      <button
-        className="card__btnEdit"
-        onClick={handleEditName}
-      >
-        <img className="card__btnImg" src={editBtn} alt="edit button img" />
-      </button>
+        <button
+          className="card__btnEdit"
+          onClick={handleEditName}
+        >
+          <img className="card__btnImg" src={editBtn} alt="edit button img" />
+        </button>
 
       {card.dueDate && (
         <div className="card__date">

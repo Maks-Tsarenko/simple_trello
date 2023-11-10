@@ -1,6 +1,8 @@
 import React, { useRef } from 'react';
 import './CardInput.scss';
-import closeBtn from 'img/Close.svg';
+import Button from '@mui/material/Button';
+import CloseIcon from '@mui/icons-material/Close';
+import TextField from '@mui/material/TextField';
 
 type Props = {
   cardName: string;
@@ -35,32 +37,53 @@ export const CardInput: React.FC<Props> = ({
   return (
     <div className="card-input">
       <div className="card-input__container">
-        <textarea
-          className="card-input__textarea"
-          value={cardName}
+        <TextField
+          defaultValue={cardName}
+          onBlur={handleCardInputBlur}
           onChange={onCardNameSet}
           onKeyUp={onKeyUpCardName}
-          onBlur={handleCardInputBlur}
-          placeholder="Enter card name"
+          placeholder='Enter card name'
+          sx={{
+            width: '250px',
+          }}
+          multiline
           autoFocus
-        ></textarea>
+        />
       </div>
 
       <div className="card-input__actions">
-        <button
-          className="card-input__btn card-input__btn--add"
-          onClick={onAddCard}
+        <Button
+          variant="contained"
+          type="submit"
+          size='small'
+          onClick={onCancelAddCard}
+          sx={{
+            height: '32px',
+            marginRight: '16px',
+          }}
         >
           Add card
-        </button>
-        <button
-          type="button"
-          className="card-input__btn card-input__btn--close"
+        </Button>
+
+        <Button
           onClick={onCancelAddCard}
           ref={closeButtonRef}
+          variant="contained"
+          type="submit"
+          size='small'
+          sx={{
+            padding: '0',
+            justifyContent: 'center',
+            alignItems: 'center',
+            bgcolor: '#eaecec',
+            height: '32px',
+            minWidth: '40px',
+            ':hover': { bgcolor: '#d5d8db' },
+            color: '#333',
+          }}
         >
-          <img src={closeBtn} alt="close button" />
-        </button>
+          <CloseIcon />
+        </Button>
       </div>
     </div>
   );

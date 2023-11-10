@@ -1,7 +1,9 @@
 import React from 'react';
 import './ColumnInput.scss';
-import closeBtn from 'img/Close.svg';
-import plusIcon from 'img/Plus.svg';
+import Button from '@mui/material/Button';
+import AddIcon from '@mui/icons-material/Add';
+import CloseIcon from '@mui/icons-material/Close';
+import TextField from '@mui/material/TextField';
 
 type Props = {
   isVisible: boolean,
@@ -27,40 +29,75 @@ export const ColumnInput: React.FC<Props> = ({
       className="column-input"
       onSubmit={onSubmit}
     >
-      <input
-        className="column-input__field"
-        value={columnName}
+      <TextField
         onKeyUp={onKeyUp}
+        defaultValue={columnName}
         onChange={onColumnNameChange}
-        placeholder="Enter the title of the list"
+        id="outlined-basic"
+        variant="outlined"
+        placeholder='Enter the title of the list'
         autoFocus
+        sx={{
+          width: '250px',
+          bgcolor: '#fff',
+          marginBottom: '12px',
+          '.MuiInputBase-input': {
+            height: '20px',
+            boxSizing: 'border-box',
+          },
+        }}
       />
+
       <div className="column-input__btn-group">
-        <button
-          className="column-input__btn column-input__btn--add"
+        <Button
+          variant="contained"
+          type="submit"
+          size='small'
+          sx={{
+            height: '32px',
+            marginRight: '16px',
+          }}
         >
-          Add Column
-        </button>
-        <button
-          type="button"
-          className="column-input__btn column-input__btn--close"
+          Add column
+        </Button>
+
+        <Button
           onClick={onClose}
+          variant="contained"
+          size='small'
+          sx={{
+            padding: '0',
+            justifyContent: 'center',
+            alignItems: 'center',
+            bgcolor: '#eaecec',
+            height: '32px',
+            minWidth: '40px',
+            ':hover': { bgcolor: '#d5d8db' },
+            color: '#333',
+          }}
         >
-          <img src={closeBtn} alt="close button" />
-        </button>
+          <CloseIcon />
+        </Button>
       </div>
     </form>
   ) : (
     <div className="column-input__add">
-      <button
-        className="column-input__add-btn"
+      <Button
+        variant="contained"
+        type="submit"
         onClick={onInputVisible}
+
+        sx={{
+          justifyContent: 'flex-start',
+          bgcolor: '#eaecec',
+          width: '100%',
+          ':hover': { bgcolor: '#d5d8db' },
+          color: '#333',
+        }}
+        startIcon={<AddIcon />}
       >
-        <span className="column-input__icon">
-          <img src={plusIcon} alt="add column button" />
-        </span>
-        <span className="column-input__label">Add the list</span>
-      </button>
+        Add Column
+      </Button>
     </div>
   );
 };
