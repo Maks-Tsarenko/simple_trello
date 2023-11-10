@@ -1,16 +1,17 @@
 import { useDrop } from 'react-dnd';
 import './Column.scss';
 import React, { useState } from 'react';
-import plusIcon from 'img/Plus.svg';
 import { ColumnTypes } from 'types/ColumnTypes';
 import { useAppDispatch } from 'store/hooks';
-import { addCard, moveCard, removeColumn, renameColumn } from 'slices/columnSlice';
+import { addCard, moveCard, renameColumn } from 'slices/columnSlice';
 import { CardTypes } from 'types/CardTypes';
 import { ColumnHeader } from 'components/ColumnHeader';
 import { CardList } from 'components/CardList';
 import { CardInput } from 'components/CardInput';
+import Button from '@mui/material/Button';
+import AddIcon from '@mui/icons-material/Add';
 
-export type Props = {
+type Props = {
   column: ColumnTypes,
 };
 
@@ -51,10 +52,6 @@ export const Column: React.FC<Props> = ({
       canDrop: monitor.canDrop(),
     }),
   });
-
-  const handleDeleteColumn = () => {
-    dispatch(removeColumn(id));
-  };
 
   const handleEditName = () => {
     setIsEditing(true);
@@ -120,9 +117,9 @@ export const Column: React.FC<Props> = ({
     >
       <div className="column__content">
         <ColumnHeader
+          columnId={id}
           isEditing={isEditing}
           onEditName={handleEditName}
-          handleDeleteColumn={handleDeleteColumn}
           onNameChange={handleNameChange}
           onSaveName={handleSaveName}
           onKeyUp={handleKeyUpColumnName}
@@ -147,13 +144,22 @@ export const Column: React.FC<Props> = ({
           onKeyUpCardName={handleKeyUpCardName}
         />
       ) : (
-        <button
-          className="column__add-card"
+        <Button
+          variant="contained"
+          type="submit"
           onClick={handleVisibleAddCard}
+
+          sx={{
+            justifyContent: 'flex-start',
+            bgcolor: '#eaecec',
+            width: '100%',
+            ':hover': { bgcolor: '#d5d8db' },
+            color: '#333',
+          }}
+          startIcon={<AddIcon />}
         >
-          <img className="column__card-img" src={plusIcon} alt="plus button icon" />
-          <div className="column__btn-title">Add card</div>
-        </button>
+          Add Card
+        </Button>
       )}
     </section>
   )

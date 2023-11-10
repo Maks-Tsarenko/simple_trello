@@ -13,6 +13,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import { addYears, subYears } from 'date-fns';
 import { formatDateToString } from 'helpers/functions/formatDateToString';
 import { formatStringToDate } from 'helpers/functions/formatStringToDate';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 
 type Props = {
   card: CardTypes,
@@ -91,11 +93,16 @@ export const CardModal: React.FC<Props> = ({
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className={`card-modal-title__header card-modal-title__header${getCurrentColor(dueDate)}`}>
-          <input
-            className="card-modal-title__data card-modal-title__data--title"
+          <TextField
             onKeyUp={handleKeyUp}
-            type='text'
+            id="outlined-basic"
+            variant="outlined"
             {...register("name")}
+            error={errors.name ? true : false}
+            sx={{
+              width: '100%',
+              bgcolor: '#fff',
+            }}
           />
 
           {errors.name && <p className="error-message">{errors.name.message}</p>}
@@ -107,10 +114,15 @@ export const CardModal: React.FC<Props> = ({
             <h3 className="card-modal-description__title">Description</h3>
           </div>
 
-          <textarea
-            className="card-modal-description__data card-modal-description__data--description"
+          <TextField
             {...register("description")}
-          ></textarea>
+            placeholder='Enter description'
+            multiline
+            error={errors.description ? true : false}
+            sx={{
+              width: '600px',
+            }}
+          />
 
           {errors.description && <p className="error-message">{errors.description.message}</p>}
         </div>
@@ -122,7 +134,7 @@ export const CardModal: React.FC<Props> = ({
                 <div className="card-modal__date-close card-modal__date-choose">
                   Expires on
                 </div>
-                
+
                 <DatePicker
                   selected={formatStringToDate(watch('dueDate'))}
                   onChange={onDateChange}
@@ -133,35 +145,42 @@ export const CardModal: React.FC<Props> = ({
               </>
             ) : (
               <>
-              <div className="card-modal__date-close card-modal__date-choose">
-                Choose date
-              </div>
+                <div className="card-modal__date-close card-modal__date-choose">
+                  Choose date
+                </div>
 
-              <DatePicker
-                selected={formatStringToDate(watch('dueDate'))}
-                onChange={onDateChange}
-                dateFormat="dd.MM.yyyy"
-                minDate={tenYearsAgo}
-                maxDate={tenYearsFromNow}
-              />
-            </>
+                <DatePicker
+                  selected={formatStringToDate(watch('dueDate'))}
+                  onChange={onDateChange}
+                  dateFormat="dd.MM.yyyy"
+                  minDate={tenYearsAgo}
+                  maxDate={tenYearsFromNow}
+                />
+              </>
             )}
 
           </div>
         </div>
 
-        <button
-          className="card-modal__btn card-modal__btn--save card-modal__btn--last"
+        <Button
+          variant="contained"
           type="submit"
         >
           Save
-        </button>
-        <button
-          className="card-modal__btn card-modal__btn--close"
+        </Button>
+
+        <Button
+          variant="contained"
+          type="submit"
           onClick={handleModalCloseClick}
+          sx={{
+            bgcolor: '#f8f9fa',
+            ':hover': { bgcolor: '#d5d8db' },
+            color: '#333',
+          }}
         >
           Close
-        </button>
+        </Button>
       </form>
     </div>
   );

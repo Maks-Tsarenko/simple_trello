@@ -1,5 +1,7 @@
 import React from 'react';
 import './RenameCardModal.scss';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 type Props = {
   editedName: string
@@ -43,12 +45,12 @@ export const ModalRenameCard: React.FC<Props> = ({
             Save
           </button>
 
-          <button
-            className="modal__btn modal__btn--remove"
+          <IconButton
+            aria-label="delete"
             onClick={(e) => onRemoveCard(e)}
           >
-            Remove
-          </button>
+            <DeleteIcon />
+          </IconButton>
         </div>
       </div>
     </div>
